@@ -38,7 +38,7 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	public boolean checkIfRegisteredForParking(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
 		boolean isRegistered = false;	
-		List<InforTransaction> transaction = customSelectQuery(FETCH_TRANSACTION.concat(" where userid=:userid"))
+		List<InforParking> transaction = customSelectQuery(FETCH_PARKING)
 				.setParameter("userid", inforTransaction.getUserid())
 				.list();		
 		if(transaction.size() > 0){
