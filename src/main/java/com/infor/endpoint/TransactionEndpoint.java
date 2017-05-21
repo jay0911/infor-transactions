@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.infor.models.AjaxResponseBody;
+import com.infor.dto.TransactionDTO;
 import com.infor.models.InforTransaction;
 import com.infor.service.TransactionService;
 
@@ -16,7 +16,7 @@ public class TransactionEndpoint {
 	private TransactionService ts;
 	
 	@PostMapping("/checkregisteredforparking")
-	public AjaxResponseBody checkIfRegisteredForParking(@RequestBody InforTransaction it){
+	public TransactionDTO checkIfRegisteredForParking(@RequestBody InforTransaction it){
 		return ts.checkIfRegisteredForParking(it);
 	}
 

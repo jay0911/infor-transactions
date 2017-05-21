@@ -66,7 +66,8 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	public List<InforParking> getParkingDetails(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
 		return customSelectQuery(FETCH_PARKING)
-				.list();
+				.setParameter("userid", inforTransaction.getUserid())
+				.list();	
 	}
 
 }
