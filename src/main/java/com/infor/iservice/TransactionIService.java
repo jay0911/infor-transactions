@@ -27,12 +27,12 @@ public class TransactionIService implements TransactionService{
 		if(inforParkings.size() > 0){
 			aj.setCode("200");
 			aj.setMsg("registered");
+			dto.setInforParking(inforParkings.get(0));
 		}else{
 			aj.setCode("400");
 			aj.setMsg("unregistered");
 		}
 		dto.setAjaxResponseBody(aj);
-		dto.setInforParking(inforParkings.get(0));
 		return dto;
 	}
 
