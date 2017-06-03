@@ -25,9 +25,14 @@ public class TransactionIService implements TransactionService{
 		TransactionDTO dto = new TransactionDTO();
 		AjaxResponseBody aj = new AjaxResponseBody();
 		if(inforParkings.size() > 0){
-			aj.setCode("200");
-			aj.setMsg("registered");
 			dto.setInforParking(inforParkings.get(0));
+			if(td.checkIfHavingTimeOut(it)){
+				aj.setCode("200");
+				aj.setMsg("account to timeout");
+			}else{
+				aj.setCode("201");
+				aj.setMsg("account to timein");
+			}
 		}else{
 			aj.setCode("400");
 			aj.setMsg("unregistered");

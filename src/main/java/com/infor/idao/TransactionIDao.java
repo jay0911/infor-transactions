@@ -52,7 +52,7 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	public boolean checkIfHavingTimeOut(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
 		boolean isHavingTimeOut = false;	
-		List<InforTransaction> transaction = customSelectQuery(FETCH_TRANSACTION.concat(" where userid=:userid and timeout==\"\""))
+		List<InforTransaction> transaction = customSelectQuery(FETCH_TRANSACTION.concat(" where userid=:userid and timeout='-'"))
 				.setParameter("userid", inforTransaction.getUserid())
 				.list();		
 		if(transaction.size() > 0){
