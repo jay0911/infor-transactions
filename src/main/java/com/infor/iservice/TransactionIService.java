@@ -33,6 +33,12 @@ public class TransactionIService implements TransactionService{
 				aj.setCode("201");
 				aj.setMsg("account to timein");
 			}
+			if(inforParkings.get(0).getIsparkingtandem().equals("Yes")){
+				InforTransaction transact = new InforTransaction();
+				transact.setUserid(inforParkings.get(0).getUserid());
+				transact.setParkingid(inforParkings.get(0).getParkingid());
+				dto.setTandemParkingDetails(td.getTandemParkingDetails(transact).get(0));
+			}
 		}else{
 			aj.setCode("400");
 			aj.setMsg("unregistered");

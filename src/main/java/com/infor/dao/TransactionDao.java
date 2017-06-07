@@ -11,4 +11,5 @@ public interface TransactionDao {
 	public boolean checkIfRegisteredForParking(InforTransaction inforTransaction);
 	public boolean checkIfHavingTimeOut(InforTransaction inforTransaction);
 	public List<InforParking> getParkingDetails(InforTransaction inforTransaction);
+	public List<InforParking> getTandemParkingDetails(InforTransaction inforTransaction);
 }

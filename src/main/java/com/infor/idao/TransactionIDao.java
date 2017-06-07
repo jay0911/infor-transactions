@@ -17,7 +17,8 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	private static final String UPDATE_TRANSACTION = "update InforTransaction set timeout=:timeout where userid=:userid";
 	private static final String FETCH_TRANSACTION = "from InforTransaction";
 	private static final String FETCH_PARKING = "from InforParking where userid=:userid";
-
+	private static final String FETCH_TANDEM_PARKING = "from InforParking where parkingid=:parkingid and userid not in(select userid from InforParking where userid=:userid)";
+	
 	@Override
 	public void beginTransaction(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
@@ -67,6 +68,16 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 		// TODO Auto-generated method stub
 		return customSelectQuery(FETCH_PARKING)
 				.setParameter("userid", inforTransaction.getUserid())
+				.list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<InforParking> getTandemParkingDetails(InforTransaction inforTransaction) {
+		// TODO Auto-generated method stub
+		return customSelectQuery(FETCH_TANDEM_PARKING)
+				.setParameter("userid", inforTransaction.getUserid())
+				.setParameter("parkingid", inforTransaction.getParkingid())
 				.list();	
 	}
 
