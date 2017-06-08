@@ -19,5 +19,15 @@ public class TransactionEndpoint {
 	public TransactionDTO checkIfRegisteredForParking(@RequestBody InforTransaction it){
 		return ts.checkIfRegisteredForParking(it);
 	}
+	
+	@PostMapping("/begintransaction")
+	public TransactionDTO beginTransaction(@RequestBody InforTransaction it){
+		return ts.checkIfRegisteredForParking(it);
+	}
+	
+	@PostMapping("/endtransaction")
+	public TransactionDTO endTransaction(@RequestBody InforTransaction it){
+		return ts.checkIfRegisteredForParking(it);
+	}
 
 }

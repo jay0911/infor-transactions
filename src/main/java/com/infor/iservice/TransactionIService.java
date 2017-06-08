@@ -47,4 +47,16 @@ public class TransactionIService implements TransactionService{
 		return dto;
 	}
 
+	@Override
+	public void beginTransaction(InforTransaction inforTransaction) {
+		// TODO Auto-generated method stub
+		td.beginTransaction(inforTransaction);
+	}
+
+	@Override
+	public void endTransaction(InforTransaction inforTransaction) {
+		// TODO Auto-generated method stub
+		td.endTransaction(inforTransaction);
+	}
+
 }
