@@ -2,6 +2,7 @@ package com.infor.dao;
 
 import java.util.List;
 
+import com.infor.models.InforCar;
 import com.infor.models.InforParking;
 import com.infor.models.InforTransaction;
 import com.infor.models.InforUser;
@@ -13,4 +14,5 @@ public interface TransactionDao {
 	public boolean checkIfHavingTimeOut(InforTransaction inforTransaction);
 	public List<InforParking> getParkingDetails(InforTransaction inforTransaction);
 	public List<InforUser> getTandemParkingDetails(InforTransaction inforTransaction);
+	public List<InforCar> getOwnedCars(InforTransaction inforTransaction);
 }

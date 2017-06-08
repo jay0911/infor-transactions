@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infor.dto.TransactionDTO;
+import com.infor.models.AjaxResponseBody;
 import com.infor.models.InforTransaction;
 import com.infor.service.TransactionService;
 
@@ -21,13 +22,23 @@ public class TransactionEndpoint {
 	}
 	
 	@PostMapping("/begintransaction")
-	public TransactionDTO beginTransaction(@RequestBody InforTransaction it){
-		return ts.checkIfRegisteredForParking(it);
+	public AjaxResponseBody beginTransaction(@RequestBody InforTransaction it){
+		AjaxResponseBody aj = new AjaxResponseBody();
+		try{
+			ts.beginTransaction(it);
+			aj.setCode("200");
+			aj.setMsg("timein success");
+		}catch (Exception e) {
+			// TODO: handle exception
+			aj.setCode("400");
+			aj.setMsg(e.getMessage());
+		}
+		return aj;
 	}
 	
 	@PostMapping("/endtransaction")
-	public TransactionDTO endTransaction(@RequestBody InforTransaction it){
-		return ts.checkIfRegisteredForParking(it);
+	public AjaxResponseBody endTransaction(@RequestBody InforTransaction it){
+		return null;
 	}
 
 }

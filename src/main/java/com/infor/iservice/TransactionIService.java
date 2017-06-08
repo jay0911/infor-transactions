@@ -1,5 +1,8 @@
 package com.infor.iservice;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,7 @@ public class TransactionIService implements TransactionService{
 				transact.setParkingid(inforParkings.get(0).getParkingid());
 				dto.setTandemParkingDetails(td.getTandemParkingDetails(transact).get(0));
 			}
+			dto.setInforCars(td.getOwnedCars(it));
 		}else{
 			aj.setCode("400");
 			aj.setMsg("unregistered");
@@ -50,6 +54,10 @@ public class TransactionIService implements TransactionService{
 	@Override
 	public void beginTransaction(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		inforTransaction.setTimein(dateFormat.format(date));
+		inforTransaction.setTimeout("-");
 		td.beginTransaction(inforTransaction);
 	}
 

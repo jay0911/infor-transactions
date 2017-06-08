@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import com.infor.dao.TransactionDao;
+import com.infor.models.InforCar;
 import com.infor.models.InforParking;
 import com.infor.models.InforTransaction;
 import com.infor.models.InforUser;
@@ -19,6 +20,7 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	private static final String UPDATE_TRANSACTION = "update InforTransaction set timeout=:timeout where userid=:userid";
 	private static final String FETCH_TRANSACTION = "from InforTransaction";
 	private static final String FETCH_PARKING = "from InforParking where userid=:userid";
+	private static final String FETCH_CAROWN = "from InforCar where userid=:userid";
 	private static final String FETCH_TANDEM_PARKING = "select ip.userid,iu.firstname,iu.lastname,iu.position,iu.contactnumber,iu.emailaddress,iu.inforaddress from tbl_inforparking ip inner join tbl_inforuser iu on ip.userid = iu.userid where ip.parkingid=:parkingid and ip.userid not in(select userid from tbl_inforparking where userid=:userid)";
 	
 	@Override
@@ -94,6 +96,15 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 			iu.add(inforUser);
 		}	
 		return iu;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<InforCar> getOwnedCars(InforTransaction inforTransaction) {
+		// TODO Auto-generated method stu
+		return customSelectQuery(FETCH_CAROWN)
+				.setParameter("userid", inforTransaction.getUserid())
+				.list();	
 	}
 
 }
