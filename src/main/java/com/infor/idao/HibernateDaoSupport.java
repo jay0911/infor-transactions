@@ -28,6 +28,10 @@ public class HibernateDaoSupport {
 	    public Query customSelectQuery(String stringQuery){    	
 	    	return getSessionFactory().createQuery(stringQuery);
 	    }
+	    
+	    public Query customNativeSelectQuery(String stringQuery){    	
+	    	return getSessionFactory().createSQLQuery(stringQuery);
+	    }
 
 }
 

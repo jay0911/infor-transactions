@@ -1,5 +1,6 @@
 package com.infor.idao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.infor.dao.TransactionDao;
 import com.infor.models.InforParking;
 import com.infor.models.InforTransaction;
+import com.infor.models.InforUser;
 
 @Repository
 @Transactional
@@ -17,7 +19,7 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 	private static final String UPDATE_TRANSACTION = "update InforTransaction set timeout=:timeout where userid=:userid";
 	private static final String FETCH_TRANSACTION = "from InforTransaction";
 	private static final String FETCH_PARKING = "from InforParking where userid=:userid";
-	private static final String FETCH_TANDEM_PARKING = "from InforParking where parkingid=:parkingid and userid not in(select userid from InforParking where userid=:userid)";
+	private static final String FETCH_TANDEM_PARKING = "select ip.userid,iu.firstname,iu.lastname,iu.position,iu.contactnumber,iu.emailaddress,iu.inforaddress from tbl_inforparking ip inner join tbl_inforuser iu on ip.userid = iu.userid where ip.parkingid=:parkingid and ip.userid not in(select userid from tbl_inforparking where userid=:userid)";
 	
 	@Override
 	public void beginTransaction(InforTransaction inforTransaction) {
@@ -73,12 +75,25 @@ public class TransactionIDao extends HibernateDaoSupport implements TransactionD
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<InforParking> getTandemParkingDetails(InforTransaction inforTransaction) {
+	public List<InforUser> getTandemParkingDetails(InforTransaction inforTransaction) {
 		// TODO Auto-generated method stub
-		return customSelectQuery(FETCH_TANDEM_PARKING)
+		List<InforUser> iu = new ArrayList<InforUser>();
+		List<Object[]> plainObj = customNativeSelectQuery(FETCH_TANDEM_PARKING)
 				.setParameter("userid", inforTransaction.getUserid())
 				.setParameter("parkingid", inforTransaction.getParkingid())
 				.list();	
+		for(Object[] obj: plainObj){
+			InforUser inforUser = new InforUser();
+			inforUser.setUserid((Integer)obj[0]);
+			inforUser.setFirstname((String)obj[1]);
+			inforUser.setLastname((String)obj[2]);
+			inforUser.setPosition((String)obj[3]);
+			inforUser.setContactnumber((String)obj[4]);
+			inforUser.setEmailaddress((String)obj[5]);
+			inforUser.setInforaddress((String)obj[6]);
+			iu.add(inforUser);
+		}	
+		return iu;
 	}
 
 }
