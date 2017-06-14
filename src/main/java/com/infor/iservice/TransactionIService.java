@@ -4,15 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +21,9 @@ public class TransactionIService implements TransactionService{
 	
 	@Autowired
 	private TransactionDao td;
+	
+	@Autowired
+	private Email mail;
 
 	@Override
 	public TransactionDTO checkIfRegisteredForParking(InforTransaction it) {
@@ -81,40 +75,21 @@ public class TransactionIService implements TransactionService{
 	}
 
 	@Override
-	public void sendMail(Email email) {
+	public void sendMail(Email email) {	
+		StringBuilder sb = new StringBuilder();
+		createMessage(sb,email);	
 		// TODO Auto-generated method stub
-
-		Properties props = new Properties();
-		props.put("mail.smtp.host", email.getHost());
-		props.put("mail.smtp.socketFactory.port", email.getSocketPort());
-		props.put("mail.smtp.socketFactory.class", email.getSocketClass());
-		props.put("mail.smtp.auth", email.getAuth());
-		props.put("mail.smtp.port", email.getPort());
-
-		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(email.getUserName(),email.getPassword());
-				}
-			});
-
-		try {
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(email.getSenderAddress()));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(email.getToAddress()));
-			message.setSubject(email.getSubject());
-			message.setText(email.getMessage());
-
-			Transport.send(message);
-
-			System.out.println("Done sending email");
-
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+		mail.setSenderAddress(email.getSenderAddress());
+		mail.setToAddress(email.getToAddress());
+		mail.setSubject(email.getSubject());
+		mail.setMessage(sb.toString());
+		mail.send();
+	}
 	
+	private void createMessage(StringBuilder sb,Email email){
+		sb.append(email.getMessage());
+		sb.append(System.getProperty("line.separator"));
+		sb.append("- "+email.getSenderAddress());
 	}
 
 }
